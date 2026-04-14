@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const EVOLUTION_API_URL =
-  process.env.NEXT_PUBLIC_EVOLUTION_API_URL || "http://localhost:8080";
+  process.env.EVOLUTION_API_URL ||
+  process.env.NEXT_PUBLIC_EVOLUTION_API_URL ||
+  "http://localhost:8080";
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || "";
 
 export async function POST(req: NextRequest) {
