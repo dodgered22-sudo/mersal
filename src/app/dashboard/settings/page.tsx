@@ -36,7 +36,7 @@ export default function SettingsPage() {
 
     const load = async () => {
       try {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userDoc = await getDoc(doc(db(), "users", user.uid));
         const data = userDoc.data();
         const name =
           data?.instanceName || `mersal_${user.uid.slice(0, 12)}`;
@@ -62,7 +62,7 @@ export default function SettingsPage() {
     try {
       const { updateProfile } = await import("firebase/auth");
       await updateProfile(user, { displayName });
-      await updateDoc(doc(db, "users", user.uid), { name: displayName });
+      await updateDoc(doc(db(), "users", user.uid), { name: displayName });
       toast.success("Profile updated!");
     } catch (error: any) {
       toast.error(error.message || "Failed to save");

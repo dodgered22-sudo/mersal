@@ -52,7 +52,7 @@ export default function BulkSendPage() {
     setResults([]);
 
     try {
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userDoc = await getDoc(doc(db(), "users", user.uid));
       const instanceName =
         userDoc.data()?.instanceName || `mersal_${user.uid.slice(0, 12)}`;
 

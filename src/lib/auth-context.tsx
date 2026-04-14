@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth(), (user) => {
       setUser(user);
       setLoading(false);
     });
@@ -41,13 +41,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth(), email, password);
   };
 
   const signUp = async (email: string, password: string, name: string) => {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    const cred = await createUserWithEmailAndPassword(auth(), email, password);
     await updateProfile(cred.user, { displayName: name });
-    await setDoc(doc(db, "users", cred.user.uid), {
+    await setDoc(doc(db(), "users", cred.user.uid), {
       name,
       email,
       createdAt: serverTimestamp(),
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    await firebaseSignOut(auth);
+    await firebaseSignOut(auth());
   };
 
   return (

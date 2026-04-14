@@ -89,7 +89,7 @@ export default function BookingsPage() {
     if (!user) return;
 
     const q = query(
-      collection(db, "bookings"),
+      collection(db(), "bookings"),
       where("userId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
@@ -119,7 +119,7 @@ export default function BookingsPage() {
     setSaving(true);
 
     try {
-      await addDoc(collection(db, "bookings"), {
+      await addDoc(collection(db(), "bookings"), {
         ...form,
         userId: user.uid,
         status: "pending",
@@ -147,7 +147,7 @@ export default function BookingsPage() {
     status: Booking["status"]
   ) => {
     try {
-      await updateDoc(doc(db, "bookings", bookingId), { status });
+      await updateDoc(doc(db(), "bookings", bookingId), { status });
       toast.success(`Booking ${status}`);
     } catch (error: any) {
       toast.error("Failed to update status");
@@ -156,7 +156,7 @@ export default function BookingsPage() {
 
   const deleteBooking = async (bookingId: string) => {
     try {
-      await deleteDoc(doc(db, "bookings", bookingId));
+      await deleteDoc(doc(db(), "bookings", bookingId));
       toast.success("Booking deleted");
     } catch (error: any) {
       toast.error("Failed to delete booking");
@@ -167,7 +167,7 @@ export default function BookingsPage() {
     if (!user) return;
     try {
       const userDocSnap = await import("firebase/firestore").then(
-        ({ getDoc }) => getDoc(doc(db, "users", user.uid))
+        ({ getDoc }) => getDoc(doc(db(), "users", user.uid))
       );
       const instanceName =
         userDocSnap.data()?.instanceName || `mersal_${user.uid.slice(0, 12)}`;

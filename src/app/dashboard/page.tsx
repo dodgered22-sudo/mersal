@@ -45,7 +45,7 @@ export default function DashboardPage() {
 
     try {
       // Check if instance already exists in Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userDoc = await getDoc(doc(db(), "users", user.uid));
       const userData = userDoc.data();
       const existingInstanceName =
         userData?.instanceName || instanceName;
@@ -80,7 +80,7 @@ export default function DashboardPage() {
             const createData = await createRes.json();
             // Save instance name to Firestore
             await setDoc(
-              doc(db, "users", user.uid),
+              doc(db(), "users", user.uid),
               { instanceName: existingInstanceName, updatedAt: serverTimestamp() },
               { merge: true }
             );

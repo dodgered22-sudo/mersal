@@ -15,25 +15,23 @@ let _app: FirebaseApp | undefined;
 let _auth: Auth | undefined;
 let _db: Firestore | undefined;
 
-function getApp(): FirebaseApp {
+function getFirebaseApp(): FirebaseApp {
   if (!_app) {
     _app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
   }
   return _app;
 }
 
-export const auth: Auth = new Proxy({} as Auth, {
-  get(_, prop) {
-    if (!_auth) _auth = getAuth(getApp());
-    return (_auth as any)[prop];
-  },
-});
+export function getFirebaseAuth(): Auth {
+  if (!_auth) _auth = getAuth(getFirebaseApp());
+  return _auth;
+}
 
-export const db: Firestore = new Proxy({} as Firestore, {
-  get(_, prop) {
-    if (!_db) _db = getFirestore(getApp());
-    return (_db as any)[prop];
-  },
-});
+export function getFirebaseDb(): Firestore {
+  if (!_db) _db = getFirestore(getFirebaseApp());
+  return _db;
+}
 
-export default getApp;
+export { getFirebaseAuth as auth, getFirebaseDb as db };
+
+export default getFirebaseApp;
